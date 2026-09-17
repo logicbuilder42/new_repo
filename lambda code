@@ -1,0 +1,20 @@
+import json
+import logging
+import boto3
+
+# Initialize logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    # Log the raw event
+    logger.info("Event: " + json.dumps(event))
+    
+    # Process each record within the event
+    for record in event['Records']:
+        # Extract the bucket name and file key from the event
+        bucket_name = record['s3']['bucket']['name']
+        file_key = record['s3']['object']['key']
+        
+        # Log the bucket name and file key to CloudWatch
+        logger.info(f"New file uploaded: {file_key} in bucket {bucket_name}")
